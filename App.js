@@ -1,114 +1,97 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React from 'react'
+import { Component } from 'react'
+import { View, StyleSheet, Text, TextInput, Image } from 'react-native'
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+export default class CriadorDeMeme extends Component {
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  constructor(props) {
+    super(props)
+    this.state = { texto1: '', texto2: '' }
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
+    this.escrever = this.escrever.bind(this)
+  }
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
+  mudarVogais(texto) {
+    let novoTexto = texto.toLowerCase()
+    novoTexto = novoTexto.replace(/(a|e|i|o|u)/g, 'i')
+    novotexto = novoTexto.replace(/(á|è|ã|â)/g, 'i')
+    novotexto = novoTexto.replace(/(í|ì|î)/g, 'i')
+    novotexto = novoTexto.replace(/(ó|ò|ô)/g, 'i')
+    novotexto = novoTexto.replace(/(ú|ù|û)/g, 'i')
+    return novoTexto
+  }
+
+  escrever(texto) {
+    let aux = this.state
+    aux.texto1 = texto
+    aux.texto2 = this.mudarVogais(texto)
+    this.setState(aux)
+  }
+
+  render() {
+    return (
+      <View style={style.body}>
+        <View>
+          <Text style={style.title}>Criador de Mimimi</Text>
+        </View>
+        <View style={style.inputArea}>
+          <TextInput style={style.input} placeholder="Digite seu mimimi" onChangeText={this.escrever} />
+        </View>
+        <View style={style.area}>
+          <Text style={style.texto}>{this.state.texto1.toUpperCase()}</Text>
+          <Image style={style.menino} source={require('./IMGs/mimimi.jpeg')} />
+          <Text style={[style.texto, style.textoBaixo]}>{this.state.texto2.toUpperCase()}</Text>
+        </View>
+      </View>
+    )
+  }
+}
+
+const style = StyleSheet.create({
   body: {
-    backgroundColor: Colors.white,
+    paddingTop: 30,
+    backgroundColor: '#999999',
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center'
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  title: {
+    fontSize: 30,
+    color: '#fff'
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
+  inputArea: {
+    alignSelf: 'stretch'
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
+  input: {
+    borderWidth: 1,
+    borderColor: '#999999',
+    backgroundColor: '#eeeeee',
+    height: 40,
+    margin: 20,
+    padding: 10,
   },
-  highlight: {
-    fontWeight: '700',
+  area: {
+    height: 300,
+    width: 300,
+    marginTop: 10
   },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  menino: {
+    width: 300,
+    height: 300,
+    marginTop: -70,
+    zIndex: 0
   },
-});
-
-export default App;
+  texto: {
+    fontSize: 25,
+    color: '#ffffff',
+    padding: 10,
+    backgroundColor: 'transparent',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    height: 60,
+    zIndex: 1
+  },
+  textoBaixo: {
+    marginTop: -70
+  }
+})
